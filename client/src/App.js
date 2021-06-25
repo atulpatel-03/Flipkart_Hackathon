@@ -1,9 +1,14 @@
 
 import './App.css';
+import Register from './component/auth/Register';
 
 function App() {
+  
   return (
-   <div>happy birthday lendu !!</div>
+   <div>happy birthday lendu !!
+    
+    <Register />
+   </div>
   );
 }
 
