@@ -13,7 +13,25 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  yourmails:[
+    {
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Post"
+    }
+  ],
+  future:[
+    {
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Post"
+    }
+  ],
+  history:[
+    {
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Post"
+    }
+  ]
 });
 
-module.exports = mongoose.model('user', UserSchema);
+module.exports = mongoose.model('User', UserSchema);

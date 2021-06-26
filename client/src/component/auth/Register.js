@@ -1,10 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import GoogleLogin from "react-google-login";
+import { googleLogin } from "../../redux/actions/auth";
+import PropTypes from 'prop-types';
 
-const Register = () => {
+const Register = ({ googleLogin }) => {
 
     const responseSuccessGoogle = (response) => {
-        console.log("login", response)
+        console.log("login", response);
+        const obj = {
+          tokenId: response.tokenId
+        }
+        googleLogin(obj);
       }
     
       const responseFailureGoogle = (response) => {
@@ -24,4 +31,13 @@ const Register = () => {
     )
 }
 
-export default Register
+Register.propTypes = {
+  googleLogin: PropTypes.func.isRequired,
+  // isAuthenticated: PropTypes.bool
+};
+
+// const mapStateToProps = (state) => ({
+//   isAuthenticated: state.auth.isAuthenticated
+// });
+
+export default connect(null, { googleLogin })(Register);
