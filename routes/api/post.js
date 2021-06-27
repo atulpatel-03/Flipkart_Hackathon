@@ -7,36 +7,6 @@ const Post = require('../../models/Post');
 const User = require('../../models/User');
 let cron = require('node-cron');
 
-router.get('/me',auth, async (req,res)=> {
-    try {
-        let user = await User.findById(req.user.id).select('-password');
-    if(user){
-       user = await User.findById(req.user.id).populate({path:"yourmails"}).select('-password').sort({date: -1});
-       res.json(user);
-    }
-      
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
-    }
-   
-});
-
-router.get('/history',auth, async (req,res)=> {
-    try {
-        let user = await User.findById(req.user.id).select('-password');
-    if(user){
-       user = await User.findById(req.user.id).populate({path:"history"}).select('-password');
-
-       res.json(user);
-    }
-      
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
-    }
-   
-});
 
 router.post('/send',auth,  
     check('to', 'Please include a valid email').isEmail(),
@@ -46,7 +16,7 @@ router.post('/send',auth,
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const {to, text, subject, schedule } = req.body;
+    const {to, text, subject, schedule, cc } = req.body;
 
     try {
 
@@ -58,7 +28,8 @@ router.post('/send',auth,
         to:to,
         schedule:schedule,
         subject:subject,
-        text:text
+        text:text,
+        CC:cc
       });
       
       const post = await newPost.save();
@@ -74,7 +45,8 @@ router.post('/send',auth,
                 to:to,
                 schedule:schedule,
                 subject:subject,
-                text:text
+                text:text,
+                CC:cc
               });
               
             const post = newPost.save();
@@ -92,7 +64,8 @@ router.post('/send',auth,
                 to:to,
                 schedule:schedule,
                 subject:subject,
-                text:text
+                text:text,
+                CC:cc
               });
               
               const post = newPost.save();
@@ -110,7 +83,8 @@ router.post('/send',auth,
                 to:to,
                 schedule:schedule,
                 subject:subject,
-                text:text
+                text:text,
+                CC:cc
               });
               
               const post = newPost.save();
@@ -127,7 +101,8 @@ router.post('/send',auth,
                 to:to,
                 schedule:schedule,
                 subject:subject,
-                text:text
+                text:text,
+                CC:cc
               });
               
               const post = newPost.save();
@@ -144,7 +119,8 @@ router.post('/send',auth,
                 to:to,
                 schedule:schedule,
                 subject:subject,
-                text:text
+                text:text,
+                CC:cc
               });
               
               const post = newPost.save();
@@ -161,7 +137,8 @@ router.post('/send',auth,
                 to:to,
                 schedule:schedule,
                 subject:subject,
-                text:text
+                text:text,
+                CC:cc
               });
               
               const post =  newPost.save();
@@ -178,7 +155,8 @@ router.post('/send',auth,
                 to:to,
                 schedule:schedule,
                 subject:subject,
-                text:text
+                text:text,
+                CC:cc
               });
               
               const post =  newPost.save();
@@ -195,7 +173,8 @@ router.post('/send',auth,
                 to:to,
                 schedule:schedule,
                 subject:subject,
-                text:text
+                text:text,
+                CC:cc
               });
               
               const post = newPost.save();
@@ -203,7 +182,15 @@ router.post('/send',auth,
             user.save();
         });
     }
-
+    else if(schedule === "once"){
+        user.history.push(newPost._id);
+        user.save();
+    }
+    else{
+        
+        user.history.push(newPost._id);
+        user.save();
+    }
    
 
    
@@ -217,17 +204,218 @@ router.post('/send',auth,
 }
 );
 
+router.put('/edityourmail/:mailid',auth,async (req,res)=> {
+    try {
+        let user = await User.findById(req.user.id).select('-password');
+
+        const {to, text, subject, schedule, cc } = req.body;
+
+        if(user){
+         
+            user= await User.findById(req.user.id).populate({path:"yourmails history"}).select('-password');
+
+            // let updatedmail= user.yourmails.filter((mail)=> mail._id.toString() === req.params.mailid.toString());
+
+            var updatedmail =  await Post.findById(req.params.mailid);
+           
+            console.log("findmail",updatedmail)
+
+            if(updatedmail){
+                updatedmail ={
+                    user: req.user.id,
+                    from:user.email,
+                    to:to,
+                    schedule:schedule,
+                    subject:subject,
+                    text:text,
+                    CC:cc
+                }
+
+                await updatedmail.save();
+
+                if(schedule ===  "sec"){
+                    cron.schedule('*/30 * * * * *', () => {
+                        console.log('running a task every minute');
+                        const newPost = new Post({
+                            user: req.user.id,
+                            from:user.email,
+                            to:to,
+                            schedule:schedule,
+                            subject:subject,
+                            text:text,
+                            CC:cc
+                          });
+                          
+                        const post = newPost.save();
+                        user.history.push(newPost._id);
+                        user.save();
+                    });
+                    
+                }
+                else if(schedule === "min"){
+                    cron.schedule(`*/5 * * * *`, () => {
+                        console.log('running a task every minute');
+                        const newPost = new Post({
+                            user: req.user.id,
+                            from:user.email,
+                            to:to,
+                            schedule:schedule,
+                            subject:subject,
+                            text:text,
+                            CC:cc
+                          });
+                          
+                          const post = newPost.save();
+                        user.history.push(newPost._id);
+                        user.save();
+                    });
+                   
+                }
+                else if(schedule === "hour"){
+                    cron.schedule(`0 * * * *`, () => {
+                        console.log('running a task every minute');
+                        const newPost = new Post({
+                            user: req.user.id,
+                            from:user.email,
+                            to:to,
+                            schedule:schedule,
+                            subject:subject,
+                            text:text,
+                            CC:cc
+                          });
+                          
+                          const post = newPost.save();
+                        user.history.push(newPost._id);
+                        user.save();
+                    });
+                }
+                else if(schedule === "day"){
+                    cron.schedule(`0 0 * * *`, () => {
+                        console.log('running a task every minute');
+                        const newPost = new Post({
+                            user: req.user.id,
+                            from:user.email,
+                            to:to,
+                            schedule:schedule,
+                            subject:subject,
+                            text:text,
+                            CC:cc
+                          });
+                          
+                          const post = newPost.save();
+                        user.history.push(newPost._id);
+                        user.save();
+                    });
+                }
+                else if(schedule === "weekday"){
+                    cron.schedule(`0 0 * * 1-5`, () => {
+                        console.log('running a task every minute');
+                        const newPost = new Post({
+                            user: req.user.id,
+                            from:user.email,
+                            to:to,
+                            schedule:schedule,
+                            subject:subject,
+                            text:text,
+                            CC:cc
+                          });
+                          
+                          const post = newPost.save();
+                        user.history.push(newPost._id);
+                        user.save();
+                    });
+                }
+                else if(schedule === "weekend"){
+                    cron.schedule(`0 0 * * 6,0`, () => {
+                        console.log('running a task every minute');
+                        const newPost = new Post({
+                            user: req.user.id,
+                            from:user.email,
+                            to:to,
+                            schedule:schedule,
+                            subject:subject,
+                            text:text,
+                            CC:cc
+                          });
+                          
+                          const post =  newPost.save();
+                        user.history.push(newPost._id);
+                        user.save();
+                    });
+                }
+                else if(schedule === "month"){
+                    cron.schedule(`0 0 1 * *`, () => {
+                        console.log('running a task every minute');
+                        const newPost = new Post({
+                            user: req.user.id,
+                            from:user.email,
+                            to:to,
+                            schedule:schedule,
+                            subject:subject,
+                            text:text,
+                            CC:cc
+                          });
+                          
+                          const post =  newPost.save();
+                        user.history.push(newPost._id);
+                        user.save();
+                    });
+                }
+                else if(schedule === "year"){
+                    cron.schedule(`0 0 1 1 *`, () => {
+                        console.log('running a task every minute');
+                        const newPost = new Post({
+                            user: req.user.id,
+                            from:user.email,
+                            to:to,
+                            schedule:schedule,
+                            subject:subject,
+                            text:text,
+                            CC:cc
+                          });
+                          
+                          const post = newPost.save();
+                        user.history.push(newPost._id);
+                        user.save();
+                    });
+                }
+                else if(schedule === "once"){
+                    user.history.push(newPost._id);
+                    user.save();
+                }
+                else{
+                    
+                    user.history.push(newPost._id);
+                    user.save();
+                }
+               
+            }
+
+            await user.save();
+          
+            return res.json(user);
+        }
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+})
+
 router.put('/history/deletemail/:notifyid',auth, async (req,res)=>{
     try {
         let user = await User.findById(req.user.id).select('-password');
 
 
         if(user){
+         
             user= await User.findById(req.user.id).populate({path:"history"}).select('-password');
-            let historymail= user.history.filter((mail)=> mail._id.toString() !== req.params.notifyid.toString());
+
+            let historymail= user.history.filter((mail)=> mail.id.toString() !== req.params.notifyid.toString());
+           
             user.history = historymail;
             await user.save();
-
+          
             return res.json(user);
         }
         

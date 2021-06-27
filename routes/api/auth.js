@@ -14,7 +14,7 @@ const client = new OAuth2Client("645485184858-lpmdq3q6nefhpt68lj437bmt0v49vv0m.a
 
 router.get('/', auth, async (req, res) => {
     try {
-      const user = await User.findById(req.user.id).select('-password');
+      const user = await User.findById(req.user.id).populate({path:"yourmails history"}).select('-password');
       res.json(user);
     } catch (err) {
       console.error(err.message);

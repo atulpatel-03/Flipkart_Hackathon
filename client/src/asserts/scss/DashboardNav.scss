@@ -1,0 +1,127 @@
+.dashboard-navbar{
+    margin: 0px;
+    padding: 0px;
+
+    .logo-navbar{
+        font-size: 3rem;
+        text-decoration: none;
+        font-weight: bold;
+        // margin-left: 8rem;
+    }
+
+    
+}
+
+.landing-navbar-1{
+    .dashboard-navbar-1{
+        margin: 0px;
+        padding: 0px;
+        background-color: #e3f2fd;
+        .logo-navbar{
+            font-size: 3rem;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 8rem;
+        }
+    
+        
+    }
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: 0px;
+    .dashboard-navbar{
+        background-color: #e3f2fd;
+        padding-top: 1rem;
+        padding-bottom: 0.5rem;
+    }
+    .left{
+        background: url('../images/slider.png');
+        position: absolute;
+        color:#e3f2fd;
+       
+        top:0.6rem;
+        margin-left: 1.5rem;
+        font-size: 0.05rem;
+        border-radius: 100%;
+        padding-bottom: 3.5rem;
+        
+       
+    }
+
+    .topnav{
+       
+        float: right;
+        margin-right: 3rem;
+    }
+
+    .logoutbtn{
+        border-color: black;
+        float: right;
+        padding-left: 1.2rem;
+        padding-right: 1.2rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    .logoutbtn:hover{
+        background-color: black;
+        color:white;
+    }
+
+    .slider-button{
+        height: 0.2rem;
+        width: 0.2rem;
+        padding-left:2rem;
+        img{
+            height: 5rem;
+        width: 5rem;
+        }
+    }
+
+    .list-text{
+        font-size: 3rem;
+    }
+    .list-t{
+        font-size: 3rem;
+    }
+
+    .wrapper {
+        display: flex;
+        width: 100%;
+        font-size: 1.2rem;
+        font-weight: 500;
+
+        .sidebar-menu{
+            color:black;
+            padding-left: 1.2rem;
+            font-size: 5rem;
+            img{
+                padding-right: 0.5rem;
+            }
+        }
+
+        .main-hr{
+            margin-top: 0rem;
+        }
+    }
+    
+    #sidebar {
+        width: 250px;
+        position: fixed;
+        top:auto;
+        left: 0;
+        height: 100vh;
+        z-index: 999;
+        background: #FFFBFB;
+        
+        transition: all 0.3s;
+    }
+
+    .goback{
+        border-color: black;
+    }
+}
+
+
+.drawerbtn{
+    font-size: 3rem;
+}

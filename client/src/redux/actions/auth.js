@@ -1,4 +1,5 @@
 import api from "../../utils/api";
+import setAuthToken from "../../utils/setAuthToken";
 import {
     REGISTER_SUCCESS,
     REGISTER_FAIL,
@@ -17,23 +18,32 @@ import {
         type: USER_LOADED,
         payload: res.data
       });
+      return res.data;
     } catch (err) {
       dispatch({
         type: AUTH_ERROR
       });
     }
   };
+
+  
+export const logout = () => dispatch => {
+  localStorage.clear();
+  setAuthToken(false);
+  dispatch({ type : LOGOUT , payload : {} });
+}
+
   
   
   export const register = formData => async dispatch => {
     try {
       const res = await api.post('/users', formData);
-  
+      setAuthToken(res.data.token);
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data
       });
-      dispatch(loadUser());
+      // dispatch(loadUser());
     } catch (err) {
         console.log(err.message);
 
@@ -50,13 +60,14 @@ import {
   
     try {
       const res = await api.post('/auth', body);
-  
+      setAuthToken(res.data.token);
+
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data
       });
   
-      dispatch(loadUser());
+      // dispatch(loadUser());
     } catch (err) {
         console.log(err.message);
 
@@ -70,8 +81,8 @@ import {
   export const googleLogin= (data) => async dispatch =>{
       try {
           let res = await api.post('/auth/googlelogin',data);
-
-          console.log("Coming Data",res);
+          setAuthToken(res.data.token);
+          console.log("Coming Data",res.data.token);
 
           dispatch({
             type: LOGIN_SUCCESS,
@@ -88,5 +99,3 @@ import {
       }
   }
   
-  
-  export const logout = () => ({ type: LOGOUT });

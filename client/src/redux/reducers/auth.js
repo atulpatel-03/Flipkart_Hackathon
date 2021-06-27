@@ -28,7 +28,6 @@ import {
         };
       case REGISTER_SUCCESS:
       case LOGIN_SUCCESS:
-          localStorage.setItem('token',payload.token);
         return {
           ...state,
           ...payload,
@@ -39,7 +38,6 @@ import {
       case LOGIN_FAIL:
       case REGISTER_FAIL:
       case LOGOUT:
-          localStorage.removeItem('token');
         return {
           ...state,
           token: null,

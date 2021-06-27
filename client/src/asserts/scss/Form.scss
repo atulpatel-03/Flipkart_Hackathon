@@ -1,0 +1,31 @@
+.mail-form{
+
+
+
+    h3{
+        font-size: 4rem;
+    }
+
+    font-size: 1.8rem;
+    .goback{
+        border-color: black;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-left: 1rem;
+    }
+
+    .sendbtn{
+        padding-left: 1rem;
+        padding-right: 1rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+}
+
+@media (max-width: 490px){
+    h3{
+        font-size: 2rem !important;
+    }
+}

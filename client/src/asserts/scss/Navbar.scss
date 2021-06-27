@@ -1,0 +1,42 @@
+
+
+.landing-navbar{
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: 0px;
+    .dashboard-navbar{
+        background-color: #e3f2fd;
+        padding-top: 1rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .logo-navbar{
+        font-size: 3rem;
+        text-decoration: none;
+        font-weight: bold;
+        
+    }
+
+    .topnav{
+       
+        float: right;
+        margin-right: 3rem;
+    }
+    
+    .loginbtn{
+       border-color: black;
+       margin-left: 1rem;
+       padding-left: 1.2rem;
+       padding-right: 1.2rem;
+       font-size: 1.5rem;
+       font-weight: 600;
+    }
+    
+
+    .loginbtn:hover{
+        background-color: black;
+        color:white;
+    }
+
+   
+}
